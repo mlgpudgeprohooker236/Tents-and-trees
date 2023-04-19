@@ -1,0 +1,223 @@
+class MapGenerator{
+
+    function Pair generateGridSizes(int levelNumber){
+        var int rows, cols;
+        var Pair sizes;
+        if (levelNumber = 1){
+            let rows = 5;
+            let cols = 5;
+        }
+        if (levelNumber = 2){
+            let rows = 6;
+            let cols = 6;
+        }
+        if (levelNumber = 3){
+            let rows = 8;
+            let cols = 8;
+        }
+        if (levelNumber = 4){
+            let rows = 10;
+            let cols = 7;
+        }
+        let sizes = Pair.new(rows, cols);
+        return sizes;
+    }
+
+    function int generateTreesCount(int levelNumber){
+        var int treesCount;
+        if (levelNumber = 1){
+            let treesCount = 5;
+        }
+        if (levelNumber = 2){
+            let treesCount = 8;
+        }
+        if (levelNumber = 3){
+            let treesCount = 14;
+        }
+        if (levelNumber = 4){
+            let treesCount = 13;
+        }
+        return treesCount;
+    }
+
+    function Array generateTrees(int levelNumber, int treesCount){
+        var Array trees;
+        let trees = Array.new(treesCount);
+        if (levelNumber = 1){
+            let trees[0] = Pair.new(1, 1);
+            let trees[1] = Pair.new(3, 1);
+            let trees[2] = Pair.new(0, 3);
+            let trees[3] = Pair.new(1, 3);
+            let trees[4] = Pair.new(4, 4);
+        }
+        if (levelNumber = 2){
+            let trees[0] = Pair.new(0, 1);
+            let trees[1] = Pair.new(2, 1);
+            let trees[2] = Pair.new(5, 1);
+            let trees[3] = Pair.new(1, 2);
+            let trees[4] = Pair.new(1, 4);
+            let trees[5] = Pair.new(4, 4);
+            let trees[6] = Pair.new(5, 4);
+            let trees[7] = Pair.new(2, 5);
+        }
+        if (levelNumber = 3){
+            let trees[0] = Pair.new(1, 0);
+            let trees[1] = Pair.new(0, 1);
+            let trees[2] = Pair.new(2, 1);
+            let trees[3] = Pair.new(6, 1);
+            let trees[4] = Pair.new(4, 2);
+            let trees[5] = Pair.new(2, 3);
+            let trees[6] = Pair.new(3, 3);
+            let trees[7] = Pair.new(1, 4);
+            let trees[8] = Pair.new(4, 4);
+            let trees[9] = Pair.new(7, 5);
+            let trees[10] = Pair.new(0, 6);
+            let trees[11] = Pair.new(2, 6);
+            let trees[12] = Pair.new(3, 7);
+            let trees[13] = Pair.new(6, 7);
+        }
+        if (levelNumber = 4){
+            let trees[0] = Pair.new(2, 0);
+            let trees[1] = Pair.new(6, 0);
+            let trees[2] = Pair.new(4, 1);
+            let trees[3] = Pair.new(1, 3);
+            let trees[4] = Pair.new(3, 3);
+            let trees[5] = Pair.new(2, 4);
+            let trees[6] = Pair.new(4, 4);
+            let trees[7] = Pair.new(0, 5);
+            let trees[8] = Pair.new(5, 5);
+            let trees[9] = Pair.new(2, 7);
+            let trees[10] = Pair.new(5, 7);
+            let trees[11] = Pair.new(2, 8);
+            let trees[12] = Pair.new(3, 8);
+        }
+        return trees;
+    }
+
+    function Array generateAnswerTents(int levelNumber, int treesCount){
+        var Array answerTents;
+        let answerTents = Array.new(treesCount);
+        if (levelNumber = 1){
+            let answerTents[0] = Pair.new(3, 0);
+            let answerTents[1] = Pair.new(0, 1);
+            let answerTents[2] = Pair.new(2, 3);
+            let answerTents[3] = Pair.new(4, 3);
+            let answerTents[4] = Pair.new(0, 4);
+        }
+        if (levelNumber = 2){
+            let answerTents[0] = Pair.new(0, 0);
+            let answerTents[1] = Pair.new(2, 0);
+            let answerTents[2] = Pair.new(4, 1);
+            let answerTents[3] = Pair.new(2, 2);
+            let answerTents[4] = Pair.new(4, 3);
+            let answerTents[5] = Pair.new(0, 4);
+            let answerTents[6] = Pair.new(3, 5);
+            let answerTents[7] = Pair.new(5, 5);
+        }
+        if (levelNumber = 3){
+            let answerTents[0] = Pair.new(0, 0);
+            let answerTents[1] = Pair.new(2, 0);
+            let answerTents[2] = Pair.new(4, 1);
+            let answerTents[3] = Pair.new(7, 1);
+            let answerTents[4] = Pair.new(0, 2);
+            let answerTents[5] = Pair.new(2, 2);
+            let answerTents[6] = Pair.new(3, 4);
+            let answerTents[7] = Pair.new(5, 4);
+            let answerTents[8] = Pair.new(7, 4);
+            let answerTents[9] = Pair.new(1, 5);
+            let answerTents[10] = Pair.new(6, 6);
+            let answerTents[11] = Pair.new(0, 7);
+            let answerTents[12] = Pair.new(2, 7);
+            let answerTents[13] = Pair.new(4, 7);
+        }
+        if (levelNumber = 4){
+            let answerTents[0] = Pair.new(1, 0);
+            let answerTents[1] = Pair.new(6, 1);
+            let answerTents[2] = Pair.new(4, 2);
+            let answerTents[3] = Pair.new(0, 3);
+            let answerTents[4] = Pair.new(2, 3);
+            let answerTents[5] = Pair.new(5, 4);
+            let answerTents[6] = Pair.new(2, 5);
+            let answerTents[7] = Pair.new(0, 6);
+            let answerTents[8] = Pair.new(5, 6);
+            let answerTents[9] = Pair.new(3, 7);
+            let answerTents[10] = Pair.new(1, 8);
+            let answerTents[11] = Pair.new(5, 8);
+            let answerTents[12] = Pair.new(3, 9);
+        }
+        return answerTents;
+    }
+
+    function Array generateRestrictions(int levelNumber, int rows, int cols){
+        var Array leftRestrictions, topRestrictions, restrictions;
+        let restrictions = Array.new(2);
+        let leftRestrictions = Array.new(rows);
+        let topRestrictions = Array.new(cols);
+        let restrictions[0] = leftRestrictions;
+        let restrictions[1] = topRestrictions;
+        if (levelNumber = 1){
+            let leftRestrictions[0] = 1;
+            let leftRestrictions[1] = 1;
+            let leftRestrictions[2] = 0;
+            let leftRestrictions[3] = 2;
+            let leftRestrictions[4] = 1;
+            let topRestrictions[0] = 2;
+            let topRestrictions[1] = 0;
+            let topRestrictions[2] = 1;
+            let topRestrictions[3] = 1;
+            let topRestrictions[4] = 1;
+        }
+        if (levelNumber = 2){
+            let leftRestrictions[0] = 2;
+            let leftRestrictions[1] = 1;
+            let leftRestrictions[2] = 1;
+            let leftRestrictions[3] = 1;
+            let leftRestrictions[4] = 1;
+            let leftRestrictions[5] = 2;
+            let topRestrictions[0] = 2;
+            let topRestrictions[1] = 0;
+            let topRestrictions[2] = 2;
+            let topRestrictions[3] = 1;
+            let topRestrictions[4] = 2;
+            let topRestrictions[5] = 1;
+        }
+        if (levelNumber = 3){
+            let leftRestrictions[0] = 2;
+            let leftRestrictions[1] = 2;
+            let leftRestrictions[2] = 2;
+            let leftRestrictions[3] = 0;
+            let leftRestrictions[4] = 3;
+            let leftRestrictions[5] = 1;
+            let leftRestrictions[6] = 1;
+            let leftRestrictions[7] = 3;
+            let topRestrictions[0] = 3;
+            let topRestrictions[1] = 1;
+            let topRestrictions[2] = 3;
+            let topRestrictions[3] = 1;
+            let topRestrictions[4] = 2;
+            let topRestrictions[5] = 1;
+            let topRestrictions[6] = 1;
+            let topRestrictions[7] = 2;
+        }
+        if (levelNumber = 4){
+            let leftRestrictions[0] = -1;
+            let leftRestrictions[1] = 1;
+            let leftRestrictions[2] = 1;
+            let leftRestrictions[3] = -1;
+            let leftRestrictions[4] = 1;
+            let leftRestrictions[5] = 1;
+            let leftRestrictions[6] = 2;
+            let leftRestrictions[7] = 1;
+            let leftRestrictions[8] = -1;
+            let leftRestrictions[9] = -1;
+            let topRestrictions[0] = 2;
+            let topRestrictions[1] = -1;
+            let topRestrictions[2] = 2;
+            let topRestrictions[3] = 2;
+            let topRestrictions[4] = 1;
+            let topRestrictions[5] = 3;
+            let topRestrictions[6] = 1;
+        }
+        return restrictions;
+    }
+}

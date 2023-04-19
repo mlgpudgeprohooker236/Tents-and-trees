@@ -1,0 +1,388 @@
+class Drawer{
+
+    field int leftScreenMemOffset, topScreenMemOffset;
+    field Array spritesArray;
+
+    constructor Drawer new(int rows, int cols){
+        let leftScreenMemOffset = (32 - cols) / 2;
+        let topScreenMemOffset = (16 - rows) / 2;
+        do initializeSpritesArray();
+        return this;
+    }
+
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+    
+    method void drawSprite(int x, int y, int spriteNumber){
+        var int memAddress, location, i;
+        var Array row;
+        let location = ((topScreenMemOffset + y) * 16 * 32) + leftScreenMemOffset + x;
+        let memAddress = 16384+location;
+        let row = spritesArray[spriteNumber];
+        let i = 0;
+        
+        while (i < 16){
+            do Memory.poke(memAddress, row[i]);
+            let memAddress = memAddress + 32;
+            let i = i + 1;
+        }
+        
+        return;
+    }
+
+    method void experiment(){
+        var int i, memAddress;
+        do Output.printInt(topScreenMemOffset);
+        do Output.printInt(leftScreenMemOffset);
+        let memAddress = 16384 + (topScreenMemOffset * 32 * 16) + leftScreenMemOffset;
+        while (i < 16){
+            do Memory.poke(memAddress, -1);
+            let memAddress = memAddress + 32;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawGrid(int rows, int cols, Array grid){
+        var int i, j, location, cellNumber;
+        var Array row;
+        let i = 0;
+        while (i < rows){
+            let row = grid[i];
+            let j = 0;
+            while (j < cols){
+                do drawSprite(j, i, row[j]);
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawLeftRestrictions(int rows, Array leftRestrictions){
+        var int i;
+        let i = 0;
+        while (i < rows){
+            if (~(leftRestrictions[i] = -1)) { do drawSprite(-1, i, leftRestrictions[i]); }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawTopRestrictions(int cols, Array topRestrictions){
+        var int j;
+        let j = 0;
+        while (j < cols){
+            if (~(topRestrictions[j] = -1)) { do drawSprite(j, -1, topRestrictions[j]); }
+            let j = j + 1;
+        }
+        return;
+    }
+
+    method void drawUserPointer(int x, int y){
+        var int memAddress, location;
+        let location = ((topScreenMemOffset + y) * 16 * 32) + leftScreenMemOffset + x;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress, 0);
+        do Memory.poke(memAddress + 480, 0);
+        do Screen.setColor(false);
+        let x = (leftScreenMemOffset + x) * 16;
+        let y = (topScreenMemOffset + y) * 16;
+        do Screen.drawLine(x, y, x, y + 15);
+        do Screen.drawLine(x + 15, y, x + 15, y + 15);
+        return;
+    }
+
+    method void eraseUserPointer(int x, int y, int spriteNumber){
+        do drawSprite(x, y, spriteNumber);
+        return;
+    }
+
+    method void drawVictoryScreen(){
+        return;
+    }
+
+    method void initializeSpritesArray(){
+        
+        var int i;
+        var Array numbers, row;
+        let spritesArray = Array.new(14);
+        let i = 0;
+        
+        while (i < 14){
+            let numbers = Array.new(16);
+            let spritesArray[i] = numbers;
+            let i = i + 1;
+        }
+        
+        // zero
+        let row = spritesArray[0];
+        let row[0] = 1020;
+        let row[1] = 2046;
+        let row[2] = 4095;
+        let row[3] = 3591;
+        let row[4] = 3591;
+        let row[5] = 3591;
+        let row[6] = 3591;
+        let row[7] = 3591;
+        let row[8] = 3591;
+        let row[9] = 3591;
+        let row[10] = 3591;
+        let row[11] = 3591;
+        let row[12] = 4095;
+        let row[13] = 2046;
+        let row[14] = 1020;
+        let row[15] = 0;
+
+        // one
+        let row = spritesArray[1];
+        let row[0] = 480;
+        let row[1] = 496;
+        let row[2] = 440;
+        let row[3] = 412;
+        let row[4] = 398;
+        let row[5] = 391;
+        let row[6] = 384;
+        let row[7] = 384;
+        let row[8] = 384;
+        let row[9] = 384;
+        let row[10] = 384;
+        let row[11] = 384;
+        let row[12] = 384;
+        let row[13] = 384;
+        let row[14] = 384;
+        let row[15] = 0;
+
+        // two
+        let row = spritesArray[2];
+        let row[0] = 1020;
+        let row[1] = 2046;
+        let row[2] = 3591;
+        let row[3] = 3591;
+        let row[4] = 3591;
+        let row[5] = 3840;
+        let row[6] = 3968;
+        let row[7] = 1984;
+        let row[8] = 992;
+        let row[9] = 496;
+        let row[10] = 248;
+        let row[11] = 124;
+        let row[12] = 62;
+        let row[13] = 4095;
+        let row[14] = 4095;
+        let row[15] = 0;
+
+        // three
+        let row = spritesArray[3];
+        let row[0] = 1020;
+        let row[1] = 2046;
+        let row[2] = 4095;
+        let row[3] = 3591;
+        let row[4] = 3591;
+        let row[5] = 3840;
+        let row[6] = 1984;
+        let row[7] = 992;
+        let row[8] = 1984;
+        let row[9] = 3840;
+        let row[10] = 3591;
+        let row[11] = 3591;
+        let row[12] = 4095;
+        let row[13] = 2046;
+        let row[14] = 1020;
+        let row[15] = 0;
+
+        // four
+        let row = spritesArray[4];
+        let row[0] = 1920;
+        let row[1] = 1984;
+        let row[2] = 1760;
+        let row[3] = 1648;
+        let row[4] = 1592;
+        let row[5] = 1564;
+        let row[6] = 1550;
+        let row[7] = 1543;
+        let row[8] = 8191;
+        let row[9] = 8191;
+        let row[10] = 1536;
+        let row[11] = 1536;
+        let row[12] = 1536;
+        let row[13] = 1536;
+        let row[14] = 1536;
+        let row[15] = 0;
+
+        // five
+        let row = spritesArray[5];
+        let row[0] = 4095;
+        let row[1] = 4095;
+        let row[2] = 7;
+        let row[3] = 7;
+        let row[4] = 7;
+        let row[5] = 1023;
+        let row[6] = 2046;
+        let row[7] = 4092;
+        let row[8] = 3584;
+        let row[9] = 3584;
+        let row[10] = 3587;
+        let row[11] = 3591;
+        let row[12] = 4095;
+        let row[13] = 2046;
+        let row[14] = 1020;
+        let row[15] = 0;
+
+        // six
+        let row = spritesArray[6];
+        let row[0] = 1020;
+        let row[1] = 2046;
+        let row[2] = 3599;
+        let row[3] = 7;
+        let row[4] = 7;
+        let row[5] = 1023;
+        let row[6] = 2047;
+        let row[7] = 4095;
+        let row[8] = 3591;
+        let row[9] = 3591;
+        let row[10] = 3591;
+        let row[11] = 3591;
+        let row[12] = 4095;
+        let row[13] = 2046;
+        let row[14] = 1020;
+        let row[15] = 0;
+
+        // seven
+        let row = spritesArray[7];
+        let row[0] = 4095;
+        let row[1] = 4095;
+        let row[2] = 3584;
+        let row[3] = 1792;
+        let row[4] = 896;
+        let row[5] = 448;
+        let row[6] = 224;
+        let row[7] = 96;
+        let row[8] = 96;
+        let row[9] = 96;
+        let row[10] = 96;
+        let row[11] = 96;
+        let row[12] = 96;
+        let row[13] = 96;
+        let row[14] = 96;
+        let row[15] = 0;
+
+        // eight
+        let row = spritesArray[8];
+        let row[0] = 1020;
+        let row[1] = 2046;
+        let row[2] = 3591;
+        let row[3] = 3591;
+        let row[4] = 3591;
+        let row[5] = 3591;
+        let row[6] = 2046;
+        let row[7] = 2046;
+        let row[8] = 2046;
+        let row[9] = 3591;
+        let row[10] = 3591;
+        let row[11] = 3591;
+        let row[12] = 3591;
+        let row[13] = 2046;
+        let row[14] = 1020;
+        let row[15] = 0;
+
+        // nine
+        let row = spritesArray[9];
+        let row[0] = 1020;
+        let row[1] = 2046;
+        let row[2] = 3591;
+        let row[3] = 3591;
+        let row[4] = 3591;
+        let row[5] = 3591;
+        let row[6] = 4095;
+        let row[7] = 4094;
+        let row[8] = 4092;
+        let row[9] = 3584;
+        let row[10] = 3584;
+        let row[11] = 3587;
+        let row[12] = 3591;
+        let row[13] = 2046;
+        let row[14] = 1020;
+        let row[15] = 0;
+
+        // empty
+        let row = spritesArray[10];
+        let row[0] = -1;
+        let row[1] = -1;
+        let row[2] = -1;
+        let row[3] = -1;
+        let row[4] = -1;
+        let row[5] = -1;
+        let row[6] = -1;
+        let row[7] = -1;
+        let row[8] = -1;
+        let row[9] = -1;
+        let row[10] = -1;
+        let row[11] = -1;
+        let row[12] = -1;
+        let row[13] = -1;
+        let row[14] = -1;
+        let row[15] = -1;
+
+        // grass
+        let row = spritesArray[11];
+        let row[0] = -1;
+        let row[1] = -32767;
+        let row[2] = -32767;
+        let row[3] = -32767;
+        let row[4] = -32767;
+        let row[5] = -32767;
+        let row[6] = -32767;
+        let row[7] = -32767;
+        let row[8] = -32767;
+        let row[9] = -32767;
+        let row[10] = -32767;
+        let row[11] = -32767;
+        let row[12] = -32767;
+        let row[13] = -32767;
+        let row[14] = -32767;
+        let row[15] = -1;
+
+        // tent
+        let row = spritesArray[12];
+        let row[0] = -1;
+        let row[1] = -32767;
+        let row[2] = -32383;
+        let row[3] = -32383;
+        let row[4] = -31807;
+        let row[5] = -31807;
+        let row[6] = -30751;
+        let row[7] = -31135;
+        let row[8] = -29071;
+        let row[9] = -29647;
+        let row[10] = -25543;
+        let row[11] = -26599;
+        let row[12] = -16387;
+        let row[13] = -16387;
+        let row[14] = -32767;
+        let row[15] = -1;
+
+        // tree
+        let row = spritesArray[13];
+        let row[0] = -1;
+        let row[1] = -32767;
+        let row[2] = -31807;
+        let row[3] = -30751;
+        let row[4] = -28687;
+        let row[5] = -28687;
+        let row[6] = -28687;
+        let row[7] = -28687;
+        let row[8] = -30751;
+        let row[9] = -32383;
+        let row[10] = -32383;
+        let row[11] = -32383;
+        let row[12] = -31807;
+        let row[13] = -31807;
+        let row[14] = -32767;
+        let row[15] = -1;
+        
+        return;
+    }
+}

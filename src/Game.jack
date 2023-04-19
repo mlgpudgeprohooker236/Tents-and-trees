@@ -1,0 +1,197 @@
+class Game{
+
+    field int rows;
+    field int cols;
+    field int userPointerX;
+    field int userPointerY;
+    field int treesCount;
+    field int userTentsCount;
+    field int levelNumber;
+    field Array grid;
+    field Array trees;
+    field Array answerTents;
+    field Array leftRestrictions;
+    field Array topRestrictions;
+    field Drawer drawer;
+
+    constructor Game new(){
+        let userPointerX = 0;
+        let userPointerY = 0;
+        return this;
+    }
+
+    method void dispose(){
+        do drawer.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void run(){
+        var Array row;
+        var char key;
+        var boolean exit, isCompleted, isContinue;
+        var int x, y, spriteNumber;
+        let exit = false;
+        let isCompleted = false;
+        let isContinue = false;
+        
+        do createLevel();
+
+        while (~exit){
+            let x = 0;
+            let y = 0;
+            let row = grid[userPointerY];
+            while (key = 0){ let key = Keyboard.keyPressed(); }
+            if (key = 81) { let exit = true; } // q (quit)
+            if (key = 87) { let y = -1; } // w (top)
+            if (key = 65) { let x = -1; } // a (left)
+            if (key = 83) { let y = 1; } // s (down)
+            if (key = 68) { let x = 1; } // d (right)
+
+            if (key = 32 & (~(row[userPointerX] = 13))){ // space (change cell)
+                let row[userPointerX] = row[userPointerX] + 1;
+                if (row[userPointerX] = 12) { let userTentsCount = userTentsCount + 1; }
+                if (row[userPointerX] > 12) { let row[userPointerX] = 10; let userTentsCount = userTentsCount - 1; }
+                //redraw cell
+                do drawer.drawSprite(userPointerX, userPointerY, row[userPointerX]);
+                let isCompleted = checkCompleted();
+                if (isCompleted){
+                    let exit = runVictoryMenu();
+                    if (~exit){
+                        let isCompleted = false;
+                        do createLevel();
+                    }
+                }
+            }
+            //clear highlighting on userPointer
+            let row = grid[userPointerY];
+            let spriteNumber = row[userPointerX];
+            do drawer.eraseUserPointer(userPointerX, userPointerY, spriteNumber);
+            //move userPointer
+            do movePointer(x, y);
+            //draw userPointer
+            do drawer.drawUserPointer(userPointerX, userPointerY);
+            if (exit) { do Screen.clearScreen(); }
+            while (~(key = 0)){ let key = Keyboard.keyPressed(); }
+        }
+
+        return;
+    }
+
+    method boolean checkCompleted(){
+        var boolean isCompleted;
+        var int i;
+        var Pair tent;
+        var Array row;
+        let i = 0;
+        let isCompleted = true;
+        if (~(userTentsCount = treesCount)){ let isCompleted = false; }
+        while (i < treesCount){
+            let tent = answerTents[i];
+            let row = grid[tent.gety()];
+            if (~(row[tent.getx()] = 12)){ let isCompleted = false; }
+            let i = i + 1;
+        }
+        return isCompleted;
+    }
+
+    method boolean runVictoryMenu(){
+        var char key;
+        var boolean exit;
+        let exit = false;
+        do Output.moveCursor(0, 0);
+        do Output.printString("victory");
+        do Sys.wait(2000);
+        do Screen.clearScreen();
+        do drawer.drawVictoryScreen();
+        do Output.moveCursor(0, 0);
+        do Output.printString("Press `q` to exit. Press any other key to continue.");
+        while (key = 0){ let key = Keyboard.keyPressed(); }
+        if (key = 81) { let exit = true; }
+        while (~(key = 0)){ let key = Keyboard.keyPressed(); }
+        return exit; 
+    }
+
+    method void createLevel(){
+        let userPointerX = 0;
+        let userPointerY = 0;
+        let userTentsCount = 0;
+        do selectLevelNumber();
+        do generateMap(levelNumber);
+        let drawer = Drawer.new(rows, cols);
+        do Screen.clearScreen();
+        do drawer.drawTopRestrictions(cols, topRestrictions);
+        do drawer.drawLeftRestrictions(rows, leftRestrictions);
+        do drawer.drawGrid(rows, cols, grid);
+        do drawer.drawUserPointer(userPointerX, userPointerY);
+        return;
+    }
+
+    method void generateMap(int levelNumber){
+        var int i, j;
+        var Array row, restrictions;
+        var Pair tree, sizes;
+        
+        let sizes = MapGenerator.generateGridSizes(levelNumber);
+        let rows = sizes.getx();
+        let cols = sizes.gety();
+        let treesCount = MapGenerator.generateTreesCount(levelNumber);
+        let trees = MapGenerator.generateTrees(levelNumber, treesCount);
+        let answerTents = MapGenerator.generateAnswerTents(levelNumber, treesCount);
+        let restrictions = MapGenerator.generateRestrictions(levelNumber, rows, cols);
+        let leftRestrictions = restrictions[0];
+        let topRestrictions = restrictions[1];
+
+        let grid = Array.new(rows);
+        let i = 0;
+        while (i < rows){
+            let row = Array.new(cols);
+            let j = 0;
+            while (j < cols){
+                let row[j] = 10;
+                let j = j + 1;
+            }
+            let grid[i] = row;
+            let i = i + 1;
+        }
+
+        let i = 0;
+        while (i < treesCount){
+            let tree = trees[i];
+            let row = grid[tree.gety()];
+            let row[tree.getx()] = 13;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void selectLevelNumber(){
+        var char key;
+        var boolean exit;
+        let exit = false;
+        do Screen.clearScreen();
+        do Output.moveCursor(0, 0);
+        do Output.printString("Pick a level number: any digit in range [1, 4].");
+        while (~exit){
+            while (~((key > 48) & (key < 53))){ let key = Keyboard.keyPressed(); }
+            if (key = 49){ let levelNumber = 1; }
+            if (key = 50){ let levelNumber = 2; }
+            if (key = 51){ let levelNumber = 3; }
+            if (key = 52){ let levelNumber = 4; }
+            while (~(key = 0)){ let key = Keyboard.keyPressed(); }
+            let exit = true;
+        }
+
+        return;
+    }
+
+    method void movePointer(int dx, int dy){
+        var Array row;
+        var int x, y, cell;
+        let x = userPointerX + dx;
+        let y = userPointerY + dy;
+        if ((x > (-1)) & (x < cols)) { let userPointerX = x; }
+        if ((y > (-1)) & (y < rows)) { let userPointerY = y; }
+        return;
+    }
+}
