@@ -32,19 +32,6 @@ class Drawer{
         return;
     }
 
-    method void experiment(){
-        var int i, memAddress;
-        do Output.printInt(topScreenMemOffset);
-        do Output.printInt(leftScreenMemOffset);
-        let memAddress = 16384 + (topScreenMemOffset * 32 * 16) + leftScreenMemOffset;
-        while (i < 16){
-            do Memory.poke(memAddress, -1);
-            let memAddress = memAddress + 32;
-            let i = i + 1;
-        }
-        return;
-    }
-
     method void drawGrid(int rows, int cols, Array grid){
         var int i, j, location, cellNumber;
         var Array row;
