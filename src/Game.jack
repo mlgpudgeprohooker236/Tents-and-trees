@@ -29,11 +29,11 @@ class Game{
     method void run(){
         var Array row;
         var char key;
-        var boolean exit, isCompleted, isContinue;
+        var boolean exit, isCompleted, isHelpEnabled;
         var int x, y, spriteNumber;
         let exit = false;
         let isCompleted = false;
-        let isContinue = false;
+        let isHelpEnabled = false;
         
         do createLevel();
 
@@ -47,6 +47,11 @@ class Game{
             if (key = 65) { let x = -1; } // a (left)
             if (key = 83) { let y = 1; } // s (down)
             if (key = 68) { let x = 1; } // d (right)
+            if (key = 72){
+                let isHelpEnabled = ~(isHelpEnabled);
+                if (isHelpEnabled) { do drawer.drawHelp(); }
+                else { do drawer.eraseHelp(); }
+            }
 
             if (key = 32 & (~(row[userPointerX] = 13))){ // space (change cell)
                 let row[userPointerX] = row[userPointerX] + 1;
@@ -56,6 +61,8 @@ class Game{
                 do drawer.drawSprite(userPointerX, userPointerY, row[userPointerX]);
                 let isCompleted = checkCompleted();
                 if (isCompleted){
+                    let isHelpEnabled = false;
+                    do drawer.eraseHelp();
                     let exit = runVictoryMenu();
                     if (~exit){
                         let isCompleted = false;

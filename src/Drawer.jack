@@ -100,6 +100,36 @@ class Drawer{
         return;
     }
 
+    method void drawHelp(){
+        do Output.moveCursor(0, 0);
+        do Output.printString("Press H again to hide.");
+        do Output.moveCursor(2, 0);
+        do Output.printString("Empty: ");
+        do drawSprite(4 - leftScreenMemOffset, 1 - topScreenMemOffset, 10);
+        do Output.moveCursor(5, 0);
+        do Output.printString("Grass: ");
+        do drawSprite(4 - leftScreenMemOffset, 3 - topScreenMemOffset, 11);
+        do Output.moveCursor(8, 0);
+        do Output.printString("Tent: ");
+        do drawSprite(4 - leftScreenMemOffset, 5 - topScreenMemOffset, 12);
+        do Output.moveCursor(11, 0);
+        do Output.printString("Tree: ");
+        do drawSprite(4 - leftScreenMemOffset, 7 - topScreenMemOffset, 13);
+        do Output.moveCursor(14, 0);
+        do Output.printString("Space: change cell");
+        do Output.moveCursor(17, 0);
+        do Output.printString("All rules in readme");
+        return;
+    }
+    
+    method void eraseHelp(){
+        do Output.moveCursor(0, 0);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 0, 16 * 10, 15 * 16);
+        do Screen.drawRectangle(0, 0, 16 * 16, 16);
+        return;
+    }
+
     method void drawVictoryScreen(){
         return;
     }
