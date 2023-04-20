@@ -1,17 +1,7 @@
 class Game{
 
-    field int rows;
-    field int cols;
-    field int userPointerX;
-    field int userPointerY;
-    field int treesCount;
-    field int userTentsCount;
-    field int levelNumber;
-    field Array grid;
-    field Array trees;
-    field Array answerTents;
-    field Array leftRestrictions;
-    field Array topRestrictions;
+    field int rows, cols, userPointerX, userPointerY, treesCount, userTentsCount, levelNumber;
+    field Array grid, trees, answerTents, leftRestrictions, topRestrictions;
     field Drawer drawer;
 
     constructor Game new(){
@@ -57,7 +47,6 @@ class Game{
                 let row[userPointerX] = row[userPointerX] + 1;
                 if (row[userPointerX] = 12) { let userTentsCount = userTentsCount + 1; }
                 if (row[userPointerX] > 12) { let row[userPointerX] = 10; let userTentsCount = userTentsCount - 1; }
-                //redraw cell
                 do drawer.drawSprite(userPointerX, userPointerY, row[userPointerX]);
                 let isCompleted = checkCompleted();
                 if (isCompleted){
@@ -70,13 +59,10 @@ class Game{
                     }
                 }
             }
-            //clear highlighting on userPointer
             let row = grid[userPointerY];
             let spriteNumber = row[userPointerX];
             do drawer.eraseUserPointer(userPointerX, userPointerY, spriteNumber);
-            //move userPointer
             do movePointer(x, y);
-            //draw userPointer
             do drawer.drawUserPointer(userPointerX, userPointerY);
             if (exit) { do Screen.clearScreen(); }
             while (~(key = 0)){ let key = Keyboard.keyPressed(); }
@@ -107,8 +93,8 @@ class Game{
         var boolean exit;
         let exit = false;
         do Output.moveCursor(0, 0);
-        do Output.printString("victory");
-        do Sys.wait(2000);
+        do Output.printString("Victory");
+        do Sys.wait(1500);
         do Screen.clearScreen();
         do drawer.drawVictoryScreen();
         do Output.moveCursor(0, 0);
@@ -116,6 +102,7 @@ class Game{
         while (key = 0){ let key = Keyboard.keyPressed(); }
         if (key = 81) { let exit = true; }
         while (~(key = 0)){ let key = Keyboard.keyPressed(); }
+        do Screen.drawRectangle(0, 0, 16 * 31, 32);
         return exit; 
     }
 
@@ -156,7 +143,6 @@ class Game{
         var char key;
         var boolean exit;
         let exit = false;
-        do Screen.clearScreen();
         do Output.moveCursor(0, 0);
         do Output.printString("Pick a level number: any digit in range [1, 4].");
         while (~exit){
@@ -168,7 +154,6 @@ class Game{
             while (~(key = 0)){ let key = Keyboard.keyPressed(); }
             let exit = true;
         }
-
         return;
     }
 
