@@ -606,91 +606,11 @@ pop pointer 1
 push that 0
 pop this 11
 push this 0
-call Array.new 1
-pop this 7
-push constant 0
-pop local 0
-label WHILE_EXP0
-push local 0
-push this 0
-lt
-not
-if-goto WHILE_END0
 push this 1
-call Array.new 1
-pop local 2
-push constant 0
-pop local 1
-label WHILE_EXP1
-push local 1
-push this 1
-lt
-not
-if-goto WHILE_END1
-push local 1
-push local 2
-add
-push constant 10
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push local 1
-push constant 1
-add
-pop local 1
-goto WHILE_EXP1
-label WHILE_END1
-push local 0
-push this 7
-add
-push local 2
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push local 0
-push constant 1
-add
-pop local 0
-goto WHILE_EXP0
-label WHILE_END0
-push constant 0
-pop local 0
-label WHILE_EXP2
-push local 0
 push this 4
-lt
-not
-if-goto WHILE_END2
-push local 0
 push this 8
-add
-pop pointer 1
-push that 0
-pop local 4
-push local 4
-call Pair.gety 1
-push this 7
-add
-pop pointer 1
-push that 0
-pop local 2
-push local 4
-call Pair.getx 1
-push local 2
-add
-push constant 13
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push local 0
-push constant 1
-add
-pop local 0
-goto WHILE_EXP2
-label WHILE_END2
+call MapGenerator.generateGrid 4
+pop this 7
 push constant 0
 return
 function Game.selectLevelNumber 2

@@ -94,6 +94,33 @@ class MapGenerator{
         return trees;
     }
 
+    function Array generateGrid(int rows, int cols, int treesCount, Array trees){
+        var Array grid, row;
+        var Pair tree;
+        var int i, j;
+        let grid = Array.new(rows);
+        let i = 0;
+        while (i < rows){
+            let row = Array.new(cols);
+            let j = 0;
+            while (j < cols){
+                let row[j] = 10;
+                let j = j + 1;
+            }
+            let grid[i] = row;
+            let i = i + 1;
+        }
+
+        let i = 0;
+        while (i < treesCount){
+            let tree = trees[i];
+            let row = grid[tree.gety()];
+            let row[tree.getx()] = 13;
+            let i = i + 1;
+        }
+        return grid;
+    }
+
     function Array generateAnswerTents(int levelNumber, int treesCount){
         var Array answerTents;
         let answerTents = Array.new(treesCount);

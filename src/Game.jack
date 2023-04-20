@@ -148,27 +148,7 @@ class Game{
         let restrictions = MapGenerator.generateRestrictions(levelNumber, rows, cols);
         let leftRestrictions = restrictions[0];
         let topRestrictions = restrictions[1];
-
-        let grid = Array.new(rows);
-        let i = 0;
-        while (i < rows){
-            let row = Array.new(cols);
-            let j = 0;
-            while (j < cols){
-                let row[j] = 10;
-                let j = j + 1;
-            }
-            let grid[i] = row;
-            let i = i + 1;
-        }
-
-        let i = 0;
-        while (i < treesCount){
-            let tree = trees[i];
-            let row = grid[tree.gety()];
-            let row[tree.getx()] = 13;
-            let i = i + 1;
-        }
+        let grid = MapGenerator.generateGrid(rows, cols, treesCount, trees);
         return;
     }
 
